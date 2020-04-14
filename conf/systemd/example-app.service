@@ -1,0 +1,11 @@
+[Unit]
+Description=MySite server
+Wants=mysqld.service
+After=network.target remote-fs.target mysqld.service
+
+[Service]
+Type=simple
+ExecStart=/opt/websys2020-srvnet-example-app/venv/bin/gunicorn --user 1000 --group 1000 --bind 127.0.0.1:8000 --workers 4 --timeout 90 --access-logfile - --error-logfile - --capture-output --env DJANGO_SETTINGS_MODULE=mysite.settings --env MYSITE_STATIC_ROOT=/opt/websys2020-srvnet-example-app/static --env MYSITE_MY_CNF=/opt/websys2020-srvnet-example-app/venv/src/websys2020-srvnet-example-app/conf/my.cnf mysite.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

@@ -28,6 +28,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    '*',
 ]
 
 
@@ -83,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': 'my.cnf',
+            'read_default_file': os.getenv("MYSITE_MY_CNF", "my.cnf"),
         },
     }
 }
@@ -126,3 +127,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.getenv("MYSITE_STATIC_ROOT", os.path.join(BASE_DIR, "static"))
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': { 
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    }
+}
